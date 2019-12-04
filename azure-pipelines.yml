@@ -1,0 +1,23 @@
+
+resources:
+  repositories:
+  - repository: self
+
+jobs:
+
+#Build and test application
+- job: BuildDotNetCore
+  displayName: Build
+  pool:
+    vmImage: 'windows-latest'
+    demands:
+    - msbuild
+    - visualstudio
+
+  steps:
+  - task: DotNetCoreCLI@2
+    displayName: Build and publish dotNet
+    inputs:
+      command: publish
+      projects: '**/*.csproj'
+      arguments: '-o "$(build.artifactstagingdirectory)"'
